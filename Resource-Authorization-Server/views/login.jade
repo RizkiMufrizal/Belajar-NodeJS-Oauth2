@@ -1,0 +1,21 @@
+extends layout
+block content
+  
+  link(rel="stylesheet", type="text/css", href="../styles/login.css")
+  
+  div
+    form(method="post", action="/oauth/authorization").form-signin
+      h2.form-signin-heading Please SignIn
+      label.sr-only Username
+      input(type="text", placeholder="Username", name="username").form-control
+      label.sr-only Password
+      input(type="text", placeholder="Password", name="password").form-control
+      .checkbox
+        label
+          input(type='checkbox', name='checkbox', value='remember-me')
+          | Remember Me
+      button(type="submit").btn.btn-lg.btn-primary.btn-block Login
+      input(id='clientId', type='hidden',value='#{clientId}', name='clientId')
+      input(id='redirectUri', type='hidden',value='#{redirectUri}', name='redirectUri')
+      input(id='responseType', type='hidden',value='#{responseType}', name='responseType')
+      input(type='hidden',value='#{csrfToken}', name='_csrf')
