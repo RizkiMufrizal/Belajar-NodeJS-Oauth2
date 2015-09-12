@@ -44,7 +44,7 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'bower_components')));
 
-mongoose.connect('mongodb://localhost/BelajarExpressJS', function(err, res) {
+mongoose.connect('mongodb://localhost/BelajarOAuth2', function(err, res) {
   if (err) {
     console.log('koneksi mongodb gagal bung', err);
   } else {
