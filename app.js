@@ -8,17 +8,23 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var path = require('path');
 var mongoose = require('mongoose');
+var cors = require('cors');
+var csrf = require('csurf');
 var auth = require('./config/auth');
 var oauth2 = require('./config/oauth2');
 var UserRoute = require('./routes/UserRoute');
 var ClientRoute = require('./routes/ClientRoute');
 
 var app = express();
+var csrfProtection = csrf({
+  cookie: true
+});
 
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
@@ -42,23 +48,6 @@ mongoose.connect('mongodb://localhost/BelajarExpressJS', function(err, res) {
   }
 });
 
-app.get('/client/registration', function(req, res) {
-  res.render('ClientRegistration')
-})
-app.post('/client/registration', ClientRoute.registerClient)
-
-app.get('/registration', function(req, res) {
-  res.render('UserRegistration')
-})
-app.post('/registration', UserRoute.registerUser)
-
-app.get('/oauth/authorization', function(req, res) {
-  res.render('login', {
-    clientId: req.query.clientId,
-    redirectUri: req.query.redirectUri,
-    responseType: req.query.responseType
-  });
-});
 app.post('/oauth/authorization', passport.authenticate('local', {
   failureRedirect: '/oauth/authorization'
 }), function(req, res) {
@@ -73,6 +62,39 @@ app.get('/restricted', passport.authenticate('accessToken', {
 }), function(req, res) {
   res.send("Yay, you successfully accessed the restricted resource!");
 });
+
+app.use(csrfProtection)
+
+app.get('/client/registration', csrfProtection, function(req, res) {
+  res.render('ClientRegistration', {
+    csrfToken: req.csrfToken()
+  });
+})
+app.post('/client/registration', ClientRoute.registerClient)
+
+app.get('/registration', csrfProtection, function(req, res) {
+  res.render('UserRegistration', {
+    csrfToken: req.csrfToken()
+  });
+})
+app.post('/registration', UserRoute.registerUser)
+
+app.get('/oauth/authorization', csrfProtection, function(req, res) {
+  res.render('login', {
+    clientId: req.query.clientId,
+    redirectUri: req.query.redirectUri,
+    responseType: req.query.responseType,
+    csrfToken: req.csrfToken()
+  });
+});
+
+app.use(function(err, req, res, next) {
+  if (err.code !== 'EBADCSRFTOKEN') return next(err)
+
+  // handle CSRF token errors here
+  res.status(403)
+  res.send('form tampered with')
+})
 
 var server = http.createServer(app);
 server.listen(app.get('port'), function() {
