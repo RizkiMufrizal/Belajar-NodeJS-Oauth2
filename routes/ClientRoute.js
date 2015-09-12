@@ -16,11 +16,11 @@ exports.registerClient = function(req, res) {
   });
 
   client.save(function(err) {
-    res.send({
+    res.json({
       name: name,
       clientId: clientId,
       clientSecret: clientSecret
-    }, 201);
+    });
   });
 
 }
