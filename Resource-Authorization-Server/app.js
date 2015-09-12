@@ -10,6 +10,7 @@ var path = require('path');
 var mongoose = require('mongoose');
 var cors = require('cors');
 var csrf = require('csurf');
+var expressPartials = require('express-partials');
 var auth = require('./config/auth');
 var oauth2 = require('./config/oauth2');
 var UserRoute = require('./routes/UserRoute');
@@ -22,8 +23,9 @@ var csrfProtection = csrf({
 
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'ejs');
 
+app.use(expressPartials());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
