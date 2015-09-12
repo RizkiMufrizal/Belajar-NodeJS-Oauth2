@@ -9,7 +9,7 @@ var bcrypt = require('bcrypt');
 var crypto = require('crypto');
 var User = require('../models/User');
 var Client = require('../models/Client');
-var AccessToke = require('../models/AccessToken');
+var AccessToken = require('../models/AccessToken');
 
 /**
 * LocalStrategy
@@ -75,9 +75,8 @@ passport.use("clientPassword", new ClientPasswordStrategy(
 
 passport.use("accessToken", new BearerStrategy(
   function(accessToken, done) {
-    var accessTokenHash = crypto.createHash('sha1').update(accessToken).digest('hex');
     AccessToken.findOne({
-      token: accessTokenHash
+      token: accessToken
     }, function(err, token) {
       if (err) return done(err)
       if (!token) return done(null, false)
