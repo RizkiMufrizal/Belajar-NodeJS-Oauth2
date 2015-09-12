@@ -17,5 +17,5 @@ block content
       button(type="submit").btn.btn-lg.btn-primary.btn-block Login
       input(id='clientId', type='hidden',value='#{clientId}', name='clientId')
       input(id='redirectUri', type='hidden',value='#{redirectUri}', name='redirectUri')
-      input(id='responseType', type='hidden',value='#{responseType}', name='responseType')    
-          
+      input(id='responseType', type='hidden',value='#{responseType}', name='responseType')
+      input(type='hidden',value='#{csrfToken}', name='_csrf')
