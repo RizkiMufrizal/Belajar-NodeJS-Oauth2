@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+
+    </div>
+    <div class="col-md-4">
+      <form action="/client/registration" method="post">
+
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" placeholder="Name" name="name">
+        </div>
+
+        <button type="submit" class="btn btn-success btn-block">
+          Sign Up
+        </button>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+      </form>
+    </div>
+  </div>
+</div>

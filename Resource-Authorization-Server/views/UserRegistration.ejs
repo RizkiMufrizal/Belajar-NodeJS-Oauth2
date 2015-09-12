@@ -1,0 +1,19 @@
+<link href="../styles/login.css" rel="stylesheet">
+
+<form class="form-signin" action="/registration" method="post">
+
+  <h1 class="form-signin-heading">Registration</h1>
+
+  <label class="sr-only">Username</label>
+  <input type="text" name="username" placeholder="Username" class="form-control">
+
+  <label class="sr-only">Password</label>
+  <input type="password" name="password" placeholder="Password" class="form-control">
+
+  <button type="submit" class="btn btn-success btn-block">
+    Sign Up
+  </button>
+
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+</form>

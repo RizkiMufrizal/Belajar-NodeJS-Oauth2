@@ -1,0 +1,24 @@
+<link href="../styles/login.css" rel="stylesheet">
+
+<form class="form-signin" action="/oauth/authorization" method="post">
+  <label class="sr-only">Username</label>
+  <input type="text" name="username" placeholder="Username" class="form-control">
+
+  <label class="sr-only">Password</label>
+  <input type="password" name="password" placeholder="Password" class="form-control">
+
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" name="name" value="remember-me"> Remember Me
+    </label>
+  </div>
+
+  <button type="submit" class="btn btn-success btn-block">
+    Sign Up
+  </button>
+
+  <input type="hidden" name="clientId" value="<%= clientId %>">
+  <input type="hidden" name="redirectUri" value="<%= redirectUri %>">
+  <input type="hidden" name="responseType" value="<%= responseType %>">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+</form>
