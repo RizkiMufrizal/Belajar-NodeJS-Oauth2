@@ -16,3 +16,15 @@
     </tr>
   </tbody>
 </table>
+
+<div ng-hide="paging.totalPages == 0" class="btn-group" role="group">
+  <button type="button" class="btn btn-default" ng-click="user.previousPage()">
+    <span class="glyphicon glyphicon-chevron-left"></span>  Previous
+  </button>
+  <button type="button" class="btn btn-default" disabled>
+    {{user.paging.page}} dari {{user.paging.totalPages}}
+  </button>
+  <button type="button" class="btn btn-default" ng-click="user.nextPage()">
+    Next <span class="glyphicon glyphicon-chevron-right"></span>
+  </button>
+</div>
