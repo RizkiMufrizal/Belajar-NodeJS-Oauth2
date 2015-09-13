@@ -8,8 +8,8 @@
   function UserFactory($resource, UserService) {
     var userFactory = this;
 
-    userFactory.getUsers = function(token) {
-      return $resource(UserService.getUsers, {}, {
+    userFactory.getUsers = function(token, page, jumlah) {
+      return $resource(UserService.getUsers(page, jumlah), {}, {
         query: {
           method: 'GET',
           isArray: true,
