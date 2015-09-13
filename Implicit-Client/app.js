@@ -7,7 +7,6 @@ var expressSession = require('express-session');
 var http = require('http');
 var bodyParser = require('body-parser');
 var path = require('path');
-var expressPartials = require('express-partials');
 var favicon = require('serve-favicon');
 
 var app = express();
@@ -17,7 +16,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(favicon(__dirname + '/public/imgs/favicon.ico'));
-app.use(expressPartials());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -30,7 +28,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'bower_components')));
 
 app.get('/', function(req, res) {
-  res.send('Hello World!');
+  res.render('index');
+});
+
+app.get('/pages/:namePage', function(req, res) {
+  res.render(req.params.namePage);
 });
 
 var server = http.createServer(app);
