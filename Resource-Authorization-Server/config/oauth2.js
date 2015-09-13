@@ -9,13 +9,22 @@ var AccessToken = require('../models/AccessToken');
 var uuid = require('./uuid');
 
 var server = oauth2orize.createServer();
+var algorithm = 'aes-256-ctr';
+var password = 'administrator';
+
+function encrypt(text) {
+  var cipher = crypto.createCipher(algorithm, password)
+  var crypted = cipher.update(text, 'utf8', 'hex')
+  crypted += cipher.final('hex');
+  return crypted;
+}
 
 server.serializeClient(function(client, done) {
   return done(null, client.clientId);
 });
 
 server.deserializeClient(function(id, done) {
-  Client.find({ //cek lagi
+  Client.find({
     clientId: id
   }, function(err, client) {
     if (err) return done(err);
@@ -27,11 +36,11 @@ server.deserializeClient(function(id, done) {
 //Implicit grant
 server.grant(oauth2orize.grant.token(function(client, user, ares, done) {
   var token = uuid.uid(256);
-  var tokenHash = crypto.createHash('sha1').update(token).digest('hex')
+  var tokenHash = encrypt(token);
   var tokenExpired = new Date(new Date().getTime() + (3600 * 1000))
 
   var accessToken = new AccessToken({
-    token: tokenHash,
+    token: token,
     tokenExpired: tokenExpired,
     userId: user.username,
     clientId: client.clienId
