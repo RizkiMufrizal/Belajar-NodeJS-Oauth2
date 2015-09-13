@@ -40,7 +40,8 @@ server.grant(oauth2orize.grant.token(function(client, user, ares, done) {
   accessToken.save(function(err) {
     if (err) return done(err)
     return done(null, token, {
-      expires_in: tokenExpired.toISOString()
+      expires_in: tokenExpired.toISOString(),
+      access_token: tokenHash
     });
   });
 }));
