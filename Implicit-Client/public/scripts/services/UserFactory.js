@@ -12,7 +12,7 @@
       return $resource(UserService.getUsers(page, jumlah), {}, {
         query: {
           method: 'GET',
-          isArray: true,
+          isArray: false,
           headers: {
             'Authorization': 'Bearer ' + token
           }
