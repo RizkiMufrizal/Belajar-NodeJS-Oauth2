@@ -7,7 +7,9 @@
   function UserService() {
     var userService = this;
 
-    userService.getUsers = 'http://localhost:3000/api/user';
+    userService.getUsers = function(page, jumlah) {
+      return 'http://localhost:3000/api/user?page=' + page + '&jumlah=' + jumlah;
+    };
 
     return userService;
 
