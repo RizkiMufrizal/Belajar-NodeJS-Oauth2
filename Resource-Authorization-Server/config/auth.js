@@ -11,6 +11,15 @@ var User = require('../models/User');
 var Client = require('../models/Client');
 var AccessToken = require('../models/AccessToken');
 
+var algorithm = 'aes-256-ctr';
+var password = 'administrator';
+function decrypt(text) {
+  var decipher = crypto.createDecipher(algorithm, password)
+  var dec = decipher.update(text, 'hex', 'utf8')
+  dec += decipher.final('utf8');
+  return dec;
+}
+
 /**
 * LocalStrategy
 */
@@ -75,8 +84,9 @@ passport.use("clientPassword", new ClientPasswordStrategy(
 
 passport.use("accessToken", new BearerStrategy(
   function(accessToken, done) {
+    var tokenDecrypt = decrypt(accessToken);
     AccessToken.findOne({
-      token: accessToken
+      token: tokenDecrypt
     }, function(err, token) {
       if (err) return done(err)
       if (!token) return done(null, false)
