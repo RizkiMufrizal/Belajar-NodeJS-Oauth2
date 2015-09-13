@@ -16,6 +16,7 @@ var auth = require('./config/auth');
 var oauth2 = require('./config/oauth2');
 var UserRoute = require('./routes/UserRoute');
 var ClientRoute = require('./routes/ClientRoute');
+var UserRestRoute = require('./routes/UserRestRoute');
 
 var app = express();
 var csrfProtection = csrf({
@@ -66,6 +67,8 @@ app.get('/restricted', passport.authenticate('accessToken', {
 }), function(req, res) {
   res.send("Yay, you successfully accessed the restricted resource!");
 });
+
+app.use('/api', UserRestRoute);
 
 app.use(csrfProtection)
 
