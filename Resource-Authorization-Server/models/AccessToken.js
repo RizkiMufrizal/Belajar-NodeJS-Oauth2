@@ -17,7 +17,8 @@ var accessToken = new Schema({
     required: true
   },
   clientId: {
-    type: 'String'
+    type: 'String',
+    required: true
   }
 }, {
   collection: 'tb_accessToken'
