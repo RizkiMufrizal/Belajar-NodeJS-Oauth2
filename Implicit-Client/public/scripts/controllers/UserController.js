@@ -3,9 +3,9 @@
 
   angular.module('ImplicitClient')
     .controller('UserController', UserController);
-  UserController.$inject = ['UserFactory', '$window', '$crypto'];
+  UserController.$inject = ['UserFactory', '$crypto', 'ipCookie'];
 
-  function UserController(UserFactory, $window, $crypto) {
+  function UserController(UserFactory, $crypto, ipCookie) {
     var user = this;
 
     user.dataUser = {};
@@ -15,7 +15,7 @@
     };
 
     function getUser() {
-      UserFactory.getUsers($crypto.decrypt($window.sessionStorage.getItem('token')), user.paging.page, user.paging.jumlah).query({}, function(data) {
+      UserFactory.getUsers($crypto.decrypt(ipCookie('token')), user.paging.page, user.paging.jumlah).query({}, function(data) {
         user.dataUser = data.documents;
 
         user.paging.totalPages = data.totalPages;
