@@ -38,7 +38,7 @@
         console.log(oauth2.pathUrl.split('=')[1]);
 
         ipCookie('token', $crypto.encrypt(oauth2.pathUrl.split('=')[1]), {
-          expires: 21
+          expires: new Date(new Date().getTime() + (3600 * 1000))
         });
 
         $window.location.href = 'http://localhost:3001/#/';
