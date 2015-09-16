@@ -7,6 +7,7 @@ var bcrypt = require('bcrypt');
 var _ = require('underscore')._;
 var Client = require('../models/Client');
 var AccessToken = require('../models/AccessToken');
+var AuthCode = require('../models/AuthCode');
 var uuid = require('./uuid');
 
 var server = oauth2orize.createServer();
@@ -18,6 +19,13 @@ function encrypt(text) {
   var crypted = cipher.update(text, 'utf8', 'hex')
   crypted += cipher.final('hex');
   return crypted;
+}
+
+function decrypt(text) {
+  var decipher = crypto.createDecipher(algorithm, password)
+  var dec = decipher.update(text, 'hex', 'utf8')
+  dec += decipher.final('utf8');
+  return dec;
 }
 
 server.serializeClient(function(client, done) {
@@ -84,6 +92,80 @@ server.grant(oauth2orize.grant.token(function(client, user, ares, done) {
   });
 
 }));
+
+//authorization code
+server.grant(oauth2orize.grant.code(function(client, redirectUri, user, ares, done) {
+
+  var code = uuid.uid(20);
+  var codeHash = encrypt(code);
+  var clientId = {};
+
+  _.each(client, function(c) {
+    clientId = c.clientId;
+  });
+
+  var authCode = new AuthCode({
+    code: code,
+    userId: user.username,
+    clientId: clientId
+  });
+
+  authCode.save(function(err) {
+    if (err) return done(err);
+    return done(null, codeHash);
+  });
+
+}));
+
+//get access token for authorization code
+server.exchange(oauth2orize.exchange.code(function(client, code, redirectUri, done) {
+
+  var codeDecrypt = decrypt(code);
+
+  AuthCode.findOne({
+    code: codeDecrypt
+  }, function(err, authCode) {
+    if (authCode) {
+
+      console.log('berhasil');
+
+      var token = uuid.uid(256);
+      var tokenHash = encrypt(token);
+
+      var refreshToken = uuid.uid(256);
+      var refreshTokenHash = encrypt(refreshToken);
+
+      var tokenExpired = new Date(new Date().getTime() + (3600 * 1000));
+
+      console.log(authCode.clientId);
+
+      AccessToken.findOne({
+        clientId: authCode.clientId
+      }, function(err, accessToken) {
+        if (err) return done(err);
+
+        var accessToken = new AccessToken({
+          token: token,
+          refreshToken: refreshToken,
+          tokenExpired: tokenExpired,
+          userId: authCode.userId,
+          clientId: authCode.clientId
+        });
+
+        accessToken.save(function(err, accessToken) {
+          if (err) return done(err)
+          done(null, tokenHash, refreshTokenHash);
+        });
+
+      });
+    }
+  });
+}));
+
+exports.token = [
+  server.token(),
+  server.errorHandler()
+];
 
 // user authorization endpoint
 exports.authorization = [
