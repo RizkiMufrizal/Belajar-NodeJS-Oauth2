@@ -5,7 +5,8 @@
       'ngRoute',
       'ngResource',
       'mdo-angular-cryptography',
-      'ui.router'
+      'ui.router',
+      'ipCookie'
     ])
     .config(['$cryptoProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', function($cryptoProvider, $stateProvider, $urlRouterProvider, $locationProvider) {
 
