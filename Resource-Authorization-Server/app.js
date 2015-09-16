@@ -59,6 +59,8 @@ app.post('/oauth/authorization', passport.authenticate('local', {
   res.redirect('/authorization?response_type=' + req.body.responseType + '&client_id=' + req.body.clientId + '&redirect_uri=' + req.body.redirectUri)
 });
 
+app.post('/oauth2/token', oauth2.token);
+
 app.get('/authorization', oauth2.authorization);
 app.post('/decision', oauth2.decision);
 
