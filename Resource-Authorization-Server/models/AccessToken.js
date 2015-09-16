@@ -12,6 +12,10 @@ var accessToken = new Schema({
     type: 'String',
     required: true
   },
+  refreshToken: {
+    type: 'String',
+    required: true
+  },
   userId: {
     type: 'String',
     required: true
