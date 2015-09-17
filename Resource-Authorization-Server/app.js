@@ -72,7 +72,7 @@ app.get('/restricted', passport.authenticate('accessToken', {
 
 app.use('/api', UserRestRoute);
 
-app.use(csrfProtection)
+app.use(csrfProtection);
 
 app.get('/client/registration', csrfProtection, function(req, res) {
   res.render('ClientRegistration', {
@@ -98,12 +98,12 @@ app.get('/oauth/authorization', csrfProtection, function(req, res) {
 });
 
 app.use(function(err, req, res, next) {
-  if (err.code !== 'EBADCSRFTOKEN') return next(err)
+  if (err.code !== 'EBADCSRFTOKEN') return next(err);
 
   // handle CSRF token errors here
-  res.status(403)
-  res.send('form tampered with')
-})
+  res.status(403);
+  res.send('form tampered with');
+});
 
 var server = http.createServer(app);
 server.listen(app.get('port'), function() {
