@@ -20,6 +20,17 @@
       });
     };
 
+    userFactory.deleteUser = function(token, id) {
+      return $resource(UserService.deleteUser(id), {}, {
+        query: {
+          method: 'DELETE',
+          headers: {
+            'Authorization': 'Bearer ' + token
+          }
+        }
+      });
+    }
+
     return userFactory;
 
   }
