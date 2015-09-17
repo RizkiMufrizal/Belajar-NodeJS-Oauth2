@@ -154,7 +154,7 @@ server.exchange(oauth2orize.exchange.code(function(client, code, redirectUri, do
 
         accessToken.save(function(err, accessToken) {
           if (err) return done(err)
-          done(null, tokenHash, refreshTokenHash);
+          done(null, tokenHash, refreshTokenHash, authCode.userId);
         });
 
       });
