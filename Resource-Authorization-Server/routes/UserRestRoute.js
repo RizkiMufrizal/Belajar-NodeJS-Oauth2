@@ -18,4 +18,18 @@ router.get('/user', passport.authenticate('accessToken', {
 
 });
 
+router.delete('/user/:id', function(req, res) {
+  console.log(req.params.id);
+  User.remove({
+    _id: req.params.id
+  }, function(err) {
+    if (err) return res.send(err);
+
+    return res.json({
+      success: true,
+      info: 'data dihapus'
+    });
+  })
+});
+
 module.exports = router;
