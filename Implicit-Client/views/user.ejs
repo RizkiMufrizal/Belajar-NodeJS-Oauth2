@@ -6,6 +6,7 @@
       <th class="text-center">Id User</th>
       <th class="text-center">Username</th>
       <th class="text-center">Password</th>
+      <th class="text-center">Aksi</th>
     </tr>
   </thead>
   <tbody ng-repeat="u in user.dataUser">
@@ -13,6 +14,11 @@
       <td>{{u._id}}</td>
       <td>{{u.username}}</td>
       <td>{{u.password}}</td>
+      <td>
+        <button type="button" class="btn btn-danger" ng-click="user.deleteUser(u._id)">
+          Delete
+        </button>
+      </td>
     </tr>
   </tbody>
 </table>
